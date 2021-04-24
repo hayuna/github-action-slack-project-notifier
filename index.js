@@ -3,22 +3,37 @@ const github = require('@actions/github')
 
 const https = require('https')
 
-const slackWebHookURL = core.getInput('SLACK_WEBHOOK_URL')
+const props = {
+  username: core.getInput('USERNAME') || 'GitHub Projects',
+  text: core.getInput('TEXT') || 'Status for the ticket has changed.',
+  iconEmoji: core.getInput('ICON_EMOJI') || ':github:',
+  color: core.getInput('COLOR') || '#FFDD00',
+  slackWebHookURL: core.getInput('SLACK_WEBHOOK_URL'),
+  token: core.getInput('TOKEN'),
+  project: core.getInput('PROJECT')
+}
 
 async function run() {
   try {
-
-    const token = core.getInput('TOKEN')
+    const {
+      username,
+      text,
+      iconEmoji,
+      color,
+      slackWebHookURL,
+      token,
+      project
+    } = props
+    
     const octokit = github.getOctokit(token);
     const changedColumnId = github.context.payload.changes && github.context.payload.changes.column_id
 
-    const setProject = core.getInput('PROJECT')
     const oneProject = github.context.payload.project_card.project_url
 
     console.log(`Your PROJECT variable for the current project is: ${oneProject}`)
 
     if (changedColumnId) {
-      if (github.context.payload.project_card.content_url && setProject === oneProject) {
+      if (github.context.payload.project_card.content_url && project === oneProject) {
 
           const issueResponse = await octokit.request(github.context.payload.project_card.content_url)
 
@@ -32,15 +47,15 @@ async function run() {
           })
 
           const userAccountNotification =  {
-            "username": "Projector",
-            "text": "Heya! Project status updated.",
-            "icon_emoji": ":rainbloblurk:",
+            username,
+            text,
+            icon_emoji: iconEmoji,
             "attachments": [
               {
-                "color": "#2eb886",
+                "color": color,
                 "fields": [
                   {
-                    "title": "Project Name",
+                    "title": "Ticket Name",
                     "value": issueResponse.data.title,
                     "short": true
                   },

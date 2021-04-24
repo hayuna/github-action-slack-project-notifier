@@ -1,5 +1,5 @@
 {
-  "name": "Slack Project Notifier",
+  "name": "Slack Project Notifier by Hayuna",
   "version": "1.0.0",
   "description": "A GitHub Action to notify a Slack channel with an actionable and minimal message when a card changes project columns.",
   "main": "index.js",

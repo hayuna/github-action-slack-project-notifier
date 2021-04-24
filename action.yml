@@ -1,4 +1,4 @@
-name: 'Slack Project Notifier'
+name: 'Slack Project Notifier by Hayuna'
 
 description: 'A GitHub Action to notify a Slack channel with an actionable and minimal message when a card changes project columns.'
 
@@ -7,6 +7,18 @@ branding:
   color: 'purple'
 
 inputs:
+  USERNAME:
+    description: 'Username visible in slack notification.'
+    required: false
+  TEXT:
+    description: 'Text visible in slack notification.'
+    required: false
+  ICON_EMOJI:
+    description: 'Emoji visible in slack notification.'
+    required: false
+  COLOR:
+    description: 'Color of notification in slack.'
+    required: false
   SLACK_WEBHOOK_URL:
     description: 'Incoming Webhook from Slack.'
     required: true
